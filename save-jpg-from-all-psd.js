@@ -1,7 +1,9 @@
 ;(function(){
   'use strict';
 
-  var directory = Folder.selectDialog('フォルダを選べ'),
+  alert('フォルダを選んでね！');
+
+  var directory = Folder.selectDialog('フォルダを選べ！'),
       jpegOpt  = new JPEGSaveOptions();
 
   jpegOpt.embedColorProfile = true;
@@ -10,9 +12,13 @@
   jpegOpt.scans             = 3;
   jpegOpt.matte             = MatteType.NONE;
 
+  if(!directory){
+    return;
+  }
+
   seekPSD(directory);
 
-  function seekPSD(folder){
+  function seekPSD (folder) {
     var files = folder.getFiles(),
         fileName = '';
 
@@ -29,12 +35,13 @@
   }
 
   function exportJPG (psdFile) {
-    var confirmFlg,
+    var isComfirm,
         fileObj;
-    open( File(psdFile.fsName) );
-    confirmFlg = confirm('[' + psdFile.fsName + ']のJPGだすよ？？');
 
-    if( confirmFlg ){
+    open( File(psdFile.fsName) );
+    isComfirm = confirm('[' + psdFile.fsName + ']\nJPG出力するよ？？');
+
+    if( isComfirm ){
       fileObj  = new File( psdFile.fsName.replace(/(\.psd)$/, '.jpg')),
       activeDocument.saveAs(fileObj, jpegOpt, true, Extension.LOWERCASE);
       activeDocument.close();
