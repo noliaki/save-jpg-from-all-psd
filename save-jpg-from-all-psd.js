@@ -39,12 +39,9 @@
         fileObj;
 
     open( File(psdFile.fsName) );
-    isComfirm = confirm('[' + psdFile.fsName + ']\nJPG出力するよ？？');
 
-    if( isComfirm ){
-      fileObj  = new File( psdFile.fsName.replace(/(\.psd)$/, '.jpg')),
-      activeDocument.saveAs(fileObj, jpegOpt, true, Extension.LOWERCASE);
-      activeDocument.close();
-    }
+    fileObj  = new File( psdFile.fsName.replace(/(\.psd)$/, '.jpg')),
+    activeDocument.saveAs(fileObj, jpegOpt, true, Extension.LOWERCASE);
+    activeDocument.close();
   }
 })();
