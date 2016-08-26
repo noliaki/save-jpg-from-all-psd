@@ -3,7 +3,7 @@
 
   alert('フォルダを選んでね！');
 
-  var directory = Folder.selectDialog('フォルダを選べ！'),
+  var directory = Folder.selectDialog('PSDフォルダを選べ！'),
       jpegOpt  = new JPEGSaveOptions();
 
   jpegOpt.embedColorProfile = true;
@@ -14,6 +14,23 @@
 
   if(!directory){
     return;
+  }
+
+  var psdDirName = directory.fsName;
+  var jpgDir = new Folder(directory.fsName + '/../JPG/');
+
+  if (!jpgDir.exists) {
+    if (confirm(jpgDir.fsName + 'フォルダを作成します')) {
+      if (jpgDir.create()) {
+        alert( jpgDir.fsName + 'フォルダを作成しました' );
+      } else {
+        alert( jpgDir.fsName + 'フォルダを作成中にエラーになりました' );
+        return;
+      }
+    } else {
+      alert( '処理を中断しました' );
+      return;
+    }
   }
 
   seekPSD(directory);
@@ -40,7 +57,7 @@
 
     open( File(psdFile.fsName) );
 
-    fileObj  = new File( psdFile.fsName.replace(/(\.psd)$/, '.jpg')),
+    fileObj  = new File( psdFile.fsName.replace(/(\.psd)$/, '.jpg').replace(psdDirName, jpgDir) );
     activeDocument.saveAs(fileObj, jpegOpt, true, Extension.LOWERCASE);
     activeDocument.close();
   }
